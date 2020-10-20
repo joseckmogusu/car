@@ -1,0 +1,148 @@
+{% extends "car/base.html"%} 
+{% block content %}
+{% load humanize %}
+  
+
+<!--section featured cars-->
+<!-- The grid: four columns -->
+
+<!-- The expanding image container -->
+   <div class="section section-icons grey lighten-4 " style="padding-top: 0px; margin-top: 0px;">
+<div class="blue-grey darken-1">
+        <div class="row centered" style="height:20px !important; margin-top:0px; margin-bottom: 30px;">
+   
+            <h4 class="center" >
+              <span class="black-text  fix-margin no-padding-top" >{{object.car_make}}  {{object.car_model}}</span></h4>
+              <div>
+                 {% if  object.author == user %}
+                 <a class="btn waves-effect green pulse right" href="{% url 'car-update' object.car_id %}">Update<i class="material-icons right">update</i></a>
+                 <a class="btn waves-effect red pulse right" href="{% url 'car-delete' object.car_id %}">Delete<i class="material-icons right">delete</i></a>
+                 
+
+
+              {% endif %}
+              <a class="btn waves-effect red pulse right" href="{% url 'car-order' object.car_id %}">Book Viewing<i class="material-icons right">car</i></a>
+
+              </div>
+            </div>
+            <div class="left-align">
+              <h5>Posted:{{object.date_posted|date:"F d, Y "}}</h5>
+              <h5>Location:{{object.car_loc}}</h5>
+            </div>
+        
+
+          <div>&nbsp</div>
+
+  </div>
+
+
+<div class="containerd">
+  
+
+  <div class="center">
+  <!-- Close the image -->
+  <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+
+  <!-- Expanded image -->
+  <img id="expandedImg" src="{{object.image_full.url}}" style="width:50%;"/>
+
+  <!-- Image text -->
+  <div id="imgtext"></div>
+</div>
+</div>
+
+<div class="row col s12" style="width:60%;">
+    <div class="column">
+    <img src="{{object.image_full.url}}" alt="full" style="line-height: 0;" onclick="myFunction(this);"/>
+  </div>
+  <div class="column" style="margin: 0px; ">
+    <img src="{{object.image_side.url}}" alt="side" style="line-height: 0;" onclick="myFunction(this);"/>
+  </div>
+  <div class="column" style="margin: 0px;">
+    <img src="{{object.image_front.url}}" alt="front" style="line-height: 0;" onclick="myFunction(this);"/>
+  </div>
+  <div class="column" style="margin: 0px;">
+    <img src="{{object.image_back.url}}" alt="back" style="line-height: 0;" onclick="myFunction(this);"/>
+  </div>
+</div>
+
+
+
+
+
+<!-- features -->
+<div class="row blue-grey darken-1 ">
+  <div class="col s12 m6">
+  <table class="striped centered">
+        <thead>
+          <tr>
+              <th>MAKE</th>
+              <th>MODEL</th>
+              <th>COLOR</th>
+              <th>YEAR</th>
+              <th>LOCATION</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>{{object.car_make}}</td>
+            <td>{{object.car_model}}</td>
+            <td>{{object.car_color}}</td>
+            <td>{{object.car_year|date:"Y" }}</td>
+            <td>{{object.car_loc}}</td>
+          </tr>
+         </tbody>
+      </table>
+
+        <table class="striped centered">
+        <thead>
+          <tr>
+              <th>FUEL TYPE</th>
+              <th>CONDITION TYPE</th>
+              <th>MILEAGE</th>
+              <th>TRANSMISSION</th>
+              <th>PRICE (KSH.)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>{{object.car_fuel}}</td>
+            <td>{{object.condition_type}}</td>
+            <td>{{object.car_mileage}}</td>
+            <td>{{object.car_transmission}}</td>
+            <td>{{object.car_price|stringformat:'0.2f'|intcomma}}</td>
+          </tr>
+         </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+  
+  
+
+
+
+
+
+  <script type="text/javascript">
+    function myFunction(imgs) {
+  // Get the expanded image
+  var expandImg = document.getElementById("expandedImg");
+  // Get the image text
+  var imgText = document.getElementById("imgtext");
+  // Use the same src in the expanded image as the image being clicked on from the grid
+  expandImg.src = imgs.src;
+  // Use the value of the alt attribute of the clickable image as text inside the expanded image
+  imgText.innerHTML = imgs.alt;
+  // Show the container element (hidden with CSS)
+  expandImg.parentElement.style.display = "block";
+}
+  </script>
+  
+
+
+
+{% endblock content %}

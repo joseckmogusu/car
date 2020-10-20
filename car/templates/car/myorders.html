@@ -1,0 +1,141 @@
+{% extends "car/base.html"%} 
+{% block content %}
+{% load humanize %}
+  
+
+<!--section featured cars-->
+
+
+  
+<div>
+  <img src="{{orders.car_db.image_front}}">
+
+
+  <h1 class="center teal-text">Your Orders</h1>
+
+  <div class="container blue-grey darken-1">
+  <div class="row center col s12 m6 l3">
+
+   <div class="col s12 m6 l3" style="width: 200px" >
+      <div class="card-panel teal" >
+        <span class="white-text">orders
+        </span>
+      </div>
+    </div>
+
+   <div class="col s12 m6 l3" style="width: 200px"  >
+      <div class="card-panel red darken-4 pulse">
+        <span class="white-text">pending orders
+        </span>
+      </div>
+    </div>
+
+   <div class="col s12 m6 l3" style="width: 200px" >
+      <div class="card-panel green pulse">
+        <span class="white-text">processed Orders
+        </span>
+      </div>
+    </div>
+     <div class="col s12 m6 l3" style="width: 200px" >
+      <div class="card-panel pink">
+        <span class="white-text">All orders:{{myorders.count}}
+        </span>
+      </div>
+    </div>
+  </div>
+
+<div class="row blue-grey darken-1 ">
+  
+  <div>
+
+  <table class="striped centered">
+            <thead style="width:100%;">
+          <tr class="teal" >
+            <th>order number</th>
+              <th>car picture</th>
+              <th>My Email</th>
+              <th>car model</th>
+              <th>car make</th>
+              <th>Date placed</th>
+              <th>Viewing date</th>
+              <th>Status</th>
+              <th>cancel/view</th>
+
+
+          </tr>
+        </thead>
+
+
+        <tbody>
+          {% for order in myorders %}
+
+          <tr>
+            <td>{{order.order_id}}</td>
+            <td > <img style="width: 100%; height: 100%; display:block; " src={{order.car_db.image_front.url}}></td>
+            <td>{{order.user.email}}</td>                       
+            <td>{{order.car_db.car_model}}</td>
+            <td>{{order.car_db.car_make}}</td>
+            <td>{{order.date_placed|date:"F d, Y "}}</td>
+            <td>{{order.date}}</td>
+            <td>{{order.status}}</td>
+            
+             <td><a href="{% url 'order-detail' order.order_id %}"  ><i style="color:#000000;" class="small material-icons">check</i></td>
+
+            <td></td>
+            
+          </tr>
+          {% endfor %}
+          
+        </tbody>
+      </table>
+    </div>
+
+          
+  </div> 
+
+</div>
+</div>
+
+
+
+
+
+
+
+  <div class="center section section-icons grey lighten-4" style="position:sticky;">
+    {% if is_paginated %}
+
+    {% if page_obj.has_previous %}
+    <a class="waves-effect waves-light btn-small" href="?page=1"><i class="material-icons right">start</i>First</a>
+    <a class="waves-effect waves-light btn-small" href="?page={{page_obj.previous_page_number}}"><i class="material-icons right">keyboard_return</i>Previous</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+
+
+    {% if page_obj.number == num %}
+
+     <a class="btn-flat disabled teal" href="?page={{num}}"><i class="material-icons right">pause</i>{{num}}</a>
+     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a class="waves-effect waves-light btn-small" href="?page={{num}}"><i class="material-icons right">more</i>{{num}}</a>
+
+
+    {% endif%}
+
+
+    {% endfor %}
+   {% if page_obj.has_next %}
+    <a class="waves-effect waves-light btn-small" href="?page={{page_obj.next_page_number}}"><i class="material-icons right">more</i>Next</a>
+    <a class="waves-effect waves-light btn-small" href="?page={{page_obj.paginator.num_pages}}"><i class="material-icons right">stop</i>Last</a>
+    {% endif %}
+
+
+
+    {% endif %}
+  </div>  
+
+  
+  
+
+
+
+{% endblock content %}

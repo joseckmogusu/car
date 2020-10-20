@@ -1,0 +1,25 @@
+{% extends "car/base.html" %}
+{% block content %}
+<div class="container teal accent-1" >
+	<div class="row" style="padding-top:50px;">
+	<form class="col s12" method="POST" enctype="multipart/form-data" style="padding-left: 100px;padding-right: 100px">
+		    {% csrf_token %}
+			<h4>
+              <legend class="red-text center" >Cancel the order</legend></h4>
+              <h2>Are You Sure you want to CANCEL order number: {{object.order_id}}</h2>
+		<div>
+<a class="btn waves-effect waves-light green pulse" href="{% url 'order-update' object.order_id %}"> Update the order<i class="material-icons ">update</i> </a>
+ 
+	
+<button class="btn waves-effect red pulse right " type="submit" name="action">
+	Cancel the Order 
+    <i class="material-icons right">delete</i>
+  </button>
+ 
+		</div>
+	</form>
+
+</div>
+</div>
+
+{% endblock %} 

@@ -1,0 +1,78 @@
+{% extends "car/base.html"%} 
+{% block content %}
+{% load humanize %}
+  
+
+<!--section featured cars-->
+<div style="place-items:center">
+     <section class="section section-icons grey lighten-4 ">
+      <div class="container no padding no-padding-top" style="width:80%">
+        <div class="row center" style="height:0px !important; padding-right: 50px; padding-left: 50px">
+            <h4 class="center" >
+              <span class="teal-text  fix-margin no-padding-top " >New Cars</span></h4>
+
+           {% for car in cars %}
+             <div class="col s12 m6 l4" style="position: relative;">
+
+              <div class="card">
+                <div class="card-image">
+                  <p class="teal" style="padding-bottom:0px">Posted on {{car.date_posted|date:"F d, Y "}}</p>
+                  <img src="{{car.image_full.url}}"  href="{% url 'car-detail' car.car_id %}" style="height:200px" >
+                  <span class="card-title">{{car.car_make|title}}</span>
+                        </div>
+          <div class="card-content">
+          <a href="{% url 'car-detail' car.car_id %}" class="teal-text">{{car.car_make|title}} {{car.car_model|title}}</a>
+          <p>{{car.car_loc}}</p>
+        </div>
+        <div class="card-action teal darken-4">
+         <a href="{% url 'car-detail' car.car_id %}">Ksh.{{car.car_price|stringformat:'0.2f'|intcomma}}</a>
+          </div>
+      </div>
+    </div>
+    {% endfor %}
+
+
+     </div>
+   </div>
+   
+
+    </section>
+  </div> 
+
+  <div class="center section section-icons grey lighten-4" style="position:sticky;">
+    {% if is_paginated %}
+
+    {% if page_obj.has_previous %}
+    <a class="waves-effect waves-light btn-small" href="?page=1"><i class="material-icons right">start</i>First</a>
+    <a class="waves-effect waves-light btn-small" href="?page={{page_obj.previous_page_number}}"><i class="material-icons right">keyboard_return</i>Previous</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+
+
+    {% if page_obj.number == num %}
+
+     <a class="btn-flat disabled teal" href="?page={{num}}"><i class="material-icons right">pause</i>{{num}}</a>
+     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a class="waves-effect waves-light btn-small" href="?page={{num}}"><i class="material-icons right">more</i>{{num}}</a>
+
+
+    {% endif%}
+
+
+    {% endfor %}
+   {% if page_obj.has_next %}
+    <a class="waves-effect waves-light btn-small" href="?page={{page_obj.next_page_number}}"><i class="material-icons right">more</i>Next</a>
+    <a class="waves-effect waves-light btn-small" href="?page={{page_obj.paginator.num_pages}}"><i class="material-icons right">stop</i>Last</a>
+    {% endif %}
+
+
+
+    {% endif %}
+  </div>  
+
+  
+  
+
+
+
+{% endblock content %}

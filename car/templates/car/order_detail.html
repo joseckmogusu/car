@@ -1,0 +1,226 @@
+{% extends "car/base.html"%} 
+{% block content %}
+{% load humanize %}
+  
+
+<!--section featured cars-->
+<!-- The grid: four columns -->
+
+<!-- The expanding image container -->
+   <div class="section section-icons grey lighten-4 " style="padding-top: 0px; margin-top: 0px;">
+<div class="blue-grey darken-1">
+        <div class="row centered" style="height:20px !important; margin-top:0px; margin-bottom: 30px;">
+   
+            <h4 class="center" >
+              <span class="black-text  fix-margin no-padding-top" >Order Number {{object.order_id}} is {{object.status}}</span></h4>
+              <div>
+                 {%if object.user.is_superuser or object.user.is_staff%}
+               <a class="btn waves-effect teal right pulse " href="{% url 'process' order.order_id %}">Process the order<i class="material-icons right">adjust</i></a>
+               {% elif object.user == user%}
+                
+             
+                 <a class="btn waves-effect green pulse right" href="{% url 'order-update' order.order_id %}">Update<i class="material-icons right">update</i></a>
+                 <a class="btn waves-effect red pulse right" href="{% url 'order-delete' order.order_id %}">Cancel the Order<i class="material-icons right">cancel</i></a>
+                 
+
+
+              {% endif %}
+             
+                 
+
+            
+
+              </div>
+               }
+            </div>
+            <div class="left-align">
+              <h5>date placed:{{object.date_placed|date:"F d, Y "}}</h5>
+              <h5>Location:{{object.car_db.car_loc}}</h5>
+
+            </div>
+        
+
+          <div>&nbsp</div>
+
+  </div>
+
+
+<div class="containerd">
+  
+
+  <div class="center">
+  <!-- Close the image -->
+  <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+
+  <!-- Expanded image -->
+  <img id="expandedImg" src="{{object.car_db.image_full.url}}" style="width:50%;"/>
+
+  <!-- Image text -->
+  <div id="imgtext"></div>
+</div>
+</div>
+
+<div class="row col s12" style="width:60%;">
+    <div class="column">
+    <img src="{{object.car_db.image_full.url}}" alt="full" style="line-height: 0;" onclick="myFunction(this);"/>
+  </div>
+  <div class="column" style="margin: 0px; ">
+    <img src="{{object.car_db.image_side.url}}" alt="side" style="line-height: 0;" onclick="myFunction(this);"/>
+  </div>
+  <div class="column" style="margin: 0px;">
+    <img src="{{object.car_db.image_front.url}}" alt="front" style="line-height: 0;" onclick="myFunction(this);"/>
+  </div>
+  <div class="column" style="margin: 0px;">
+    <img src="{{object.car_db.image_back.url}}" alt="back" style="line-height: 0;" onclick="myFunction(this);"/>
+  </div>
+</div>
+
+
+
+
+
+<!-- features -->
+<div class="row blue-grey darken-1 ">
+  <div class="col s12 m6">
+  <table class="striped centered">
+        <thead>
+          <tr>
+
+              <th>MAKE</th>
+              <th>MODEL</th>
+              <th>COLOR</th>
+              <th>YEAR</th>
+              <th>LOCATION</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+
+            <td>{{object.car_dbcar_make}}</td>
+            <td>{{object.car_db.car_model}}</td>
+            <td>{{object.car_db.car_color}}</td>
+            <td>{{object.car_db.car_year|date:"Y" }}</td>
+            <td>{{object.car_db.car_loc}}</td>
+          </tr>
+         </tbody>
+      </table>
+
+        <table class="striped centered">
+        <thead>
+          <tr>
+              <th>FUEL TYPE</th>
+              <th>CONDITION TYPE</th>
+              <th>MILEAGE</th>
+              <th>TRANSMISSION</th>
+              <th>PRICE (KSH.)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>{{object.car_db.car_fuel}}</td>
+            <td>{{object.car_db.condition_type}}</td>
+            <td>{{object.car_db.car_mileage}}</td>
+            <td>{{object.car_db.car_transmission}}</td>
+            <td>{{object.car_db.car_price|stringformat:'0.2f'|intcomma}}</td>
+          </tr>
+         </tbody>
+      </table>
+    </div>
+  <div class="col s12 m6 teal darken-3">
+  <table class="striped centered">
+        <thead>
+          <tr>
+              <th>Order Number</th>
+              <th>date placed</th>
+              <th>Viewing Date</th>
+              <th>User Email</th>
+              <th>User Mobile</th>
+
+
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>{{object.order_id}}</td>
+            <td>{{object.date_placed}}</td>
+            <td>{{object.date}}</td>
+            <td>{{object.order_email}}</td>
+            <td>{{object.order_phone }}</td>
+            
+
+          </tr>
+         </tbody>
+      </table>
+      <table class="striped centered">
+        <thead>
+          <tr>
+              <th>Order Number</th>
+              <th>date placed</th>
+              <th>Viewing Date</th>
+              <th>User Email</th>
+              <th>status</th>
+
+
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>{{object.order_id}}</td>
+            <td>{{object.date_placed}}</td>
+            <td>{{object.date}}</td>
+            <td>{{object.order_email}}</td>
+            <td>{{object.status}}</td>
+            
+
+          </tr>
+         </tbody>
+      </table>
+
+
+    </div>
+  </div>
+     {%if object.user.is_superuser or object.user.is_staff%}
+               <a class="btn waves-effect teal right pulse "  href="{% url 'process' order.order_id %}">Process the order<i class="material-icons right">adjust</i></a>
+               {% elif object.user == user%}
+                
+             
+                 <a class="btn waves-effect green pulse right" href="{% url 'order-update' order.order_id %}">Update<i class="material-icons right">update</i></a>
+                 <a class="btn waves-effect red pulse right" href="{% url 'order-delete' order.order_id %}">Cancel the Order<i class="material-icons right">cancel</i></a>
+                 
+
+
+              {% endif %}
+             
+  </div>
+
+  
+  
+
+
+
+
+
+  <script type="text/javascript">
+    function myFunction(imgs) {
+  // Get the expanded image
+  var expandImg = document.getElementById("expandedImg");
+  // Get the image text
+  var imgText = document.getElementById("imgtext");
+  // Use the same src in the expanded image as the image being clicked on from the grid
+  expandImg.src = imgs.src;
+  // Use the value of the alt attribute of the clickable image as text inside the expanded image
+  imgText.innerHTML = imgs.alt;
+  // Show the container element (hidden with CSS)
+  expandImg.parentElement.style.display = "block";
+}
+  </script>
+  
+
+
+
+{% endblock content %}

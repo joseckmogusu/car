@@ -1,0 +1,24 @@
+{% extends "car/base.html" %}
+{% block content %}
+<div class="container teal accent-1" >
+	<div class="row" style="padding-top:50px;">
+	<form class="col s12" method="POST" enctype="multipart/form-data" style="padding-left: 100px;padding-right: 100px">
+		    {% csrf_token %}
+			<h4>
+              <legend class="red-text center" >Delete</legend></h4>
+              <h2>Are You Sure you want to Delete {{object.car_make}} {{object.car_model}}</h2>
+		<div>
+	
+<button class="btn waves-effect red pulse " type="submit" name="action">
+	Delete 
+    <i class="material-icons right">delete</i>
+  </button>
+  <a class="btn waves-effect waves-light green pulse right" href="{% url 'car-detail' object.car_id %}"> Cancel <i class="material-icons right">cancel</i> </a>
+ 
+		</div>
+	</form>
+
+</div>
+</div>
+
+{% endblock %} 

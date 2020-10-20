@@ -1,0 +1,196 @@
+{% extends "car/base.html"%} 
+{% block content %}
+{% load humanize %}
+  <div class="slider">
+
+    
+    <ul class="slides">
+      <li>
+        <img src="https://lorempixel.com/580/250/nature/1"> 
+        <div class="caption center-align">
+          <h3>This is our big Tagline!</h3>
+          <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+         
+      </li>
+      <li>
+        <img src="https://lorempixel.com/580/250/nature/2"> 
+        <div class="caption left-align">
+          <h3>Left Aligned Caption</h3>
+          <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+       
+      </li>
+      <li>
+        <img src="https://lorempixel.com/580/250/nature/3"> 
+        <div class="caption right-align">
+          <h3>Right Aligned Caption</h3>
+          <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+        </div>
+      </li>
+      <li>
+        <img src="https://lorempixel.com/580/250/nature/4"> 
+        <div class="caption center-align">
+          <h3>This is our big Tagline!</h3>
+          <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+        </div>
+      </li>
+    </ul>
+  </div>
+ 
+
+
+ <!-- <div class="carousel carousel-slider">
+    <div class="carousel-fixed-item left">
+      <a class="btn waves-effect white grey-text darken-text-2">button</a>
+    </div>
+    <div class="carousel-item red white-text center" href="#one!">
+      <h2>First Panel</h2>
+      <p class="white-text">This is your first panel</p>
+    </div>
+    <div class="carousel-item amber white-text right" href="#two!">
+      <h2>Second Panel</h2>
+      <p class="white-text">This is your second panel</p>
+    </div>
+    <div class="carousel-item green white-text center" href="#three!">
+      <h2>Third Panel</h2>
+      <p class="white-text">This is your third panel</p>
+    </div>
+    <div class="carousel-item blue white-text right" href="#four!">
+      <h2>Fourth Panel</h2>
+      <p class="white-text">This is your fourth panel</p>
+    </div>
+  </div>
+-->
+
+<!--section featured cars-->
+<div class="center grey lighten-4" style="place-items:center">
+     <section class="section section-icons grey lighten-4 ">
+      <div class="container no padding no-padding-top" style="width:80%">
+        <div class="row center " style="height:0px !important; padding-right: 50px; padding-left: 50px;">
+            <h4 class="center" >
+              <span class="black-text  fix-margin no-padding-top" style="padding-top: 0px; margin-top: 0px; ">Featured Cars</span></h4>
+              <div class="card-content valign grey lighten-4" >
+  <div class="row">
+ <form method="get" class="col s12">
+
+  {% csrf_token %}
+
+  {{myfilter.form.non_field_errors }}
+
+  {{ myfilter.form.source.errors }}
+  {{myfilter.form.source }}
+  <div class="row" >
+    <div for="car_make" class="input-field col s2 " >
+          <label class="teal-text">
+        
+      make
+      </label>
+           {{myfilter.form.car_make}}
+          </div>
+            <div class="input-field col s2">
+        <label class="teal-text">
+        
+        model
+      </label>
+           {{myfilter.form.car_model}}
+          </div>
+            <div class="input-field col s2">
+           {{myfilter.form.car_year}}
+                   <label class="teal-text">
+        
+        year
+      </label>
+          </div>
+            <div for="car_color" class="input-field col s2">
+                                 <label class="teal-text">
+        
+        color
+      </label>
+            {{myfilter.form.car_color}}
+          </div>
+            <div for="car_price" class="input-field col s2">
+                                               <label class="teal-text">
+        
+        {{ myfilter.form.car_price.label_tag }}
+      </label>
+
+                  {{myfilter.form.car_price}}
+          </div>
+
+           
+       <button class="btn waves-effect waves-light col s2" type="submit" name="action">Search
+  </button>
+  
+ 
+           </form>
+         </div>
+          </div>
+
+   
+   
+           {% for car in myfilter.qs %}
+
+             <div class="col s12 m6 l4 grey lighten-4" style="position: relative;">
+
+              <div class="card grey lighten-4">
+                <div class="card-image">
+                  <p class="teal" style="padding-bottom:0px">Posted on {{car.date_posted|date:"F d, Y "}}</p>
+                  <img src="{{car.image_full.url}}"  href="{% url 'car-detail' car.car_id %}" style="height:200px" >
+                  <span class="card-title">{{car.car_make|title}}</span>
+                        </div>
+          <div class="card-content">
+          <a href="{% url 'car-detail' car.car_id %}" class="teal-text">{{car.car_make|title}} {{car.car_model|title}}</a>
+          <p>{{car.car_loc}}</p>
+        </div>
+        <div class="card-action teal darken-4">
+          <a href="{% url 'car-detail' car.car_id %}">Ksh.{{car.car_price|stringformat:'0.2f'|intcomma }}</a>
+          </div>
+      </div>
+    </div>
+    {% endfor %}
+    
+
+  </div>
+</div>
+
+
+
+
+
+      </section>
+  </div>   
+<div class="center section section-icons grey lighten-4">
+    {% if is_paginated %}
+
+    {% if page_obj.has_previous %}
+    <a class="waves-effect waves-light btn-small" href="?page=1"><i class="material-icons right">start</i>First</a>
+    <a class="waves-effect waves-light btn-small" href="?page={{page_obj.previous_page_number}}"><i class="material-icons right">keyboard_return</i>Previous</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+
+
+    {% if page_obj.number == num %}
+
+     <a class="btn-flat disabled teal" href="?page={{num}}"><i class="material-icons right">pause</i>{{num}}</a>
+     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a class="waves-effect waves-light btn-small" href="?page={{num}}"><i class="material-icons right">more</i>{{num}}</a>
+
+
+    {% endif%}
+
+
+    {% endfor %}
+   {% if page_obj.has_next %}
+    <a class="waves-effect waves-light btn-small" href="?page={{page_obj.next_page_number}}"><i class="material-icons right">more</i>Next</a>
+    <a class="waves-effect waves-light btn-small" href="?page={{page_obj.paginator.num_pages}}"><i class="material-icons right">stop</i>Last</a>
+    {% endif %}
+
+
+
+    {% endif %}
+  </div>
+  
+  
+
+
+
+{% endblock content %}
